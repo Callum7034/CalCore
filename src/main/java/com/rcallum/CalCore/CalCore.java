@@ -32,7 +32,7 @@ public final class CalCore {
         db.insertValues(table_name, map);
 
 
-        db.queryRow(table_name, 3).forEach((s, o) -> {
+        db.queryRow(table_name, "ID", 3).forEach((s, o) -> {
             System.out.println("Name: " + s + " Value: " + o.toString());
         });
 

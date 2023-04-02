@@ -41,16 +41,19 @@ public abstract class Database {
      * @param row
      *            row you would like to get data from.
      *
-     * @param id
+     * @param column
      *            The column ID/Name
+     *            
+     * @param rowID
+     *            The ID of the row you are looking to query
      *
      * @return the {@link Database}'s Query in Object format. Casting required to
      *         change variables into their original form.
      */
-    public Object queryValue(String tableName, int row, String id) {
-        String statement = "SELECT "+id+" "
+    public Object queryValue(String tableName, int row, String column, String rowID) {
+        String statement = "SELECT "+column+" "
                 + "FROM " + tableName +
-                " WHERE ID = " + row;
+                " WHERE " + rowID + " = " + row;
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -120,14 +123,17 @@ public abstract class Database {
      * @param row
      *            row you would like to get data from.
      *
+     * @param rowID
+     *            The ID of the row you are looking to query
+     *
      * @return the {@link Database}'s Query in HashMap<String, Object> format. Casting required
      *         to change objects into their original form. The String is the name of the column
      *         and the Object is the data stored inside.
      */
-    public HashMap<String, Object> queryRow(String tableName, int row) {
+    public HashMap<String, Object> queryRow(String tableName, String rowID, int row) {
         String statement = "SELECT * "
                 + "FROM " + tableName +
-                " WHERE ID = " + row;
+                " WHERE " + rowID + " = " + row;
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
