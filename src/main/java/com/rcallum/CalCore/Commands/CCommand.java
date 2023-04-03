@@ -1,8 +1,13 @@
 package com.rcallum.CalCore.Commands;
 
 
+import org.bukkit.command.Command;
+import org.bukkit.command.defaults.BukkitCommand;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class CCommand {
@@ -13,6 +18,8 @@ public class CCommand {
     private String description = "";
     private List<String> aliases = new ArrayList<>();
     private String useMessage = "none";
+    private Command bukkitCommand;
+    private Map<String, CCommand> subCommands = new HashMap<>();
 
     public CCommand() {
     }
@@ -47,6 +54,11 @@ public class CCommand {
         return this;
     }
 
+    public CCommand addSubCommand(CCommand cmd) {
+        subCommands.put(cmd.getCmd(), cmd);
+        return this;
+    }
+
     public String getCmd() {
         return cmd;
     }
@@ -69,6 +81,18 @@ public class CCommand {
 
     public String getUseMessage() {
         return useMessage;
+    }
+
+    public Command getBukkitCommand() {
+        return bukkitCommand;
+    }
+
+    public void setBukkitCommand(Command bukkitCommand) {
+        this.bukkitCommand = bukkitCommand;
+    }
+
+    public Map<String, CCommand> getSubCommands() {
+        return subCommands;
     }
 
 }

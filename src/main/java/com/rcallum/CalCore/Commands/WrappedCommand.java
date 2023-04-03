@@ -9,10 +9,10 @@ import java.util.Optional;
 public class WrappedCommand {
 
     private CommandSender sender;
-    private Map<String, Object> arguments;
+    private String[] arguments;
     private String msg;
 
-    public WrappedCommand(CommandSender sender, Map<String, Object> arguments) {
+    public WrappedCommand(CommandSender sender, String[] arguments) {
         this.sender = sender;
         this.arguments = arguments;
     }
@@ -21,20 +21,12 @@ public class WrappedCommand {
         return (Player) sender;
     }
 
-    public <T> Optional<T> getArg(String arg) {
-        return Optional.ofNullable((T) arguments.get(arg));
+    public CommandSender getSender() {
+        return sender;
     }
 
-    public <T> Optional<T> getArg(String arg, Class<T> type) {
-        return Optional.ofNullable((T) arguments.get(arg));
-    }
-
-    public <T> T getArgAsReq(String arg) {
-        return (T) arguments.get(arg);
-    }
-
-    public <T> T getArgAsReq(String arg, Class<T> type) {
-        return type.cast(arguments.get(arg));
+    public String[] getArguments() {
+        return arguments;
     }
 
     public void sendMessage(String message, Map<String, String> placeholders) {
@@ -42,6 +34,6 @@ public class WrappedCommand {
         placeholders.forEach((s, s2) -> {
             msg = msg.replaceAll(s, s2);
         });
-        sender.sendMessage(message);
+        sender.sendMessage(msg);
     }
 }
