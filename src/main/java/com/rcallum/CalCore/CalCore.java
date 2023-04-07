@@ -6,6 +6,11 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,10 +37,10 @@ public final class CalCore {
         db.insertValues(table_name, map);
 
 
-        db.queryRow(table_name, "ID", 3).forEach((s, o) -> {
-            System.out.println("Name: " + s + " Value: " + o.toString());
-        });
-
+//        db.queryRow(table_name, "ID", 3).forEach((s, o) -> {
+//            System.out.println("Name: " + s + " Value: " + o.toString());
+//        });
+        db.getColumnContents(table_name, "ID").forEach(a -> System.out.println((String)a));
 
         db.closeConnection(); // Close the connection
     }

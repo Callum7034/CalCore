@@ -93,7 +93,6 @@ public abstract class Database {
         String statement = "REPLACE INTO "+ tableName +
                 "(" + ids + ") VALUES(" + values + ")";
 
-        System.out.println(statement);
         int id = 0;
         String info = "This is some information";
         PreparedStatement ps = null;
@@ -114,6 +113,55 @@ public abstract class Database {
     }
 
     /**
+     * Get a single value from the database. Your If your statement returns multiple
+     * values, only the first value will return. Use queryRow for multiple values in
+     * 1 row.
+     * <p>
+     *
+     * @param tableName
+     *            Name of the table to access
+     *
+     * @param columnID
+     *            Name of column to get results from
+     *
+     *
+     * @return the {@link Database}'s Query in Object format. Casting required to
+     *         change variables into their original form.
+     */
+    public ArrayList<Object> getColumnContents(String tableName, String columnID) {
+        String statement = "SELECT " + columnID + " FROM " + tableName;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Object> objects = new ArrayList<>();
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement(statement);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                objects.add(rs.getObject(1));
+            }
+
+            return objects;
+        } catch (SQLException ex) {
+            // Errors.sqlConnectionExecute()
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ps != null)
+                    ps.close();
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException ex) {
+                // Errors.sqlConnectionClose()
+                ex.printStackTrace();
+            }
+        }
+        return objects;
+    }
+
+    /**
      * Get a hashmap of data from a single row on your specified table
      * <p>
      *
@@ -130,7 +178,7 @@ public abstract class Database {
      *         to change objects into their original form. The String is the name of the column
      *         and the Object is the data stored inside.
      */
-    public HashMap<String, Object> queryRow(String tableName, String rowID, int row) {
+    public HashMap<String, Object> queryRow(String tableName, String rowID, String row) {
         String statement = "SELECT * "
                 + "FROM " + tableName +
                 " WHERE " + rowID + " = " + row;
