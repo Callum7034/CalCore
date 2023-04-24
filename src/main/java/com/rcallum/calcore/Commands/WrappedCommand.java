@@ -1,10 +1,9 @@
-package com.rcallum.CalCore.Commands;
+package com.rcallum.calcore.Commands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
-import java.util.Optional;
 
 public class WrappedCommand {
 

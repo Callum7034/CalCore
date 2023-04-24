@@ -1,18 +1,10 @@
-package com.rcallum.CalCore;
+package com.rcallum.calcore;
 
-import com.rcallum.CalCore.Database.SQLite;
+import com.rcallum.calcore.Database.SQLite;
 
 import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public final class CalCore {
 

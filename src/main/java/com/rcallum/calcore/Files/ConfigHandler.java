@@ -1,4 +1,4 @@
-package com.rcallum.CalCore.Files;
+package com.rcallum.calcore.Files;
 
 import com.google.common.base.Charsets;
 import org.bukkit.configuration.file.FileConfiguration;

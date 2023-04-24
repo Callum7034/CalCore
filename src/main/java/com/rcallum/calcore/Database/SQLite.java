@@ -1,4 +1,4 @@
-package com.rcallum.CalCore.Database;
+package com.rcallum.calcore.Database;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,3 +67,4 @@ public class SQLite extends Database{
         return dataFolder;
     }
 }
+

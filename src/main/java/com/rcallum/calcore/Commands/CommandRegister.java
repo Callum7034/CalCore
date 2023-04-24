@@ -1,4 +1,4 @@
-package com.rcallum.CalCore.Commands;
+package com.rcallum.calcore.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -9,9 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandRegister {

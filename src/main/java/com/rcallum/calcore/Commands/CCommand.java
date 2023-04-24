@@ -1,8 +1,7 @@
-package com.rcallum.CalCore.Commands;
+package com.rcallum.calcore.Commands;
 
 
 import org.bukkit.command.Command;
-import org.bukkit.command.defaults.BukkitCommand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
