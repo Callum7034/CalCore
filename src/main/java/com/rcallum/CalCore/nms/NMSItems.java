@@ -11,7 +11,15 @@ public class NMSItems {
         return NBTEditor.contains(item, key);
     }
 
-    public static String getValue(ItemStack item, String key) {
+    public static String getString(ItemStack item, String key) {
         return NBTEditor.getString(item, key);
+    }
+
+    public static long getLong(ItemStack item, String key) {
+        return NBTEditor.getLong(item, key);
+    }
+
+    public static ItemStack addLong(ItemStack item, String key, long value) {
+        return NBTEditor.set(item, value, key);
     }
 }
