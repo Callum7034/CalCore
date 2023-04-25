@@ -1,4 +1,4 @@
-package com.rcallum.calcore.Commands;
+package com.rcallum.CalCore.Commands;
 
 import org.bukkit.command.Command;
 

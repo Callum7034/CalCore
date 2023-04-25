@@ -1,6 +1,6 @@
-package com.rcallum.calcore;
+package com.rcallum.CalCore;
 
-import com.rcallum.calcore.Database.SQLite;
+import com.rcallum.CalCore.Database.SQLite;
 
 import java.io.File;
 import java.sql.SQLException;

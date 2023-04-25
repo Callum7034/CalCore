@@ -1,4 +1,4 @@
-package com.rcallum.calcore.Database;
+package com.rcallum.CalCore.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

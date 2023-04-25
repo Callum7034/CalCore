@@ -1,4 +1,4 @@
-package com.rcallum.calcore.Commands;
+package com.rcallum.CalCore.Commands;
 
 public class TestCommand extends CCommand{
     public TestCommand() {

@@ -16,11 +16,16 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven {
+        name = 'ivan'
+        url = 'https://repo.mrivanplays.com/repository/ivan/'
+    }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
     implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.41.2.1'
+    implementation "com.mrivanplays:annotationconfig-yaml:3.0.2-SNAPSHOT"
 }
 
 def targetJavaVersion = 8
