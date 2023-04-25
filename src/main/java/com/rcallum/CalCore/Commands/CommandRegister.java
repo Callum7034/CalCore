@@ -68,7 +68,7 @@ public class CommandRegister {
         Map<String, Object> arguments = new HashMap<>();
         Map<String, CCommand> subCommands = cmd.getSubCommands();
 
-        if (args.length == 0 && requiredArguments.size() == 0) {
+        if (args.length == 0 && requiredArguments.size() == 0 && subCommands.size() == 0) {
             cmd.getExecute().accept(new WrappedCommand(sender, new HashMap<>()));
             return;
         }
