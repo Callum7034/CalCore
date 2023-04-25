@@ -8,10 +8,10 @@ import java.util.Map;
 public class WrappedCommand {
 
     private CommandSender sender;
-    private String[] arguments;
+    private Map<String, Object> arguments;
     private String msg;
 
-    public WrappedCommand(CommandSender sender, String[] arguments) {
+    public WrappedCommand(CommandSender sender, Map<String, Object> arguments) {
         this.sender = sender;
         this.arguments = arguments;
     }
@@ -24,7 +24,7 @@ public class WrappedCommand {
         return sender;
     }
 
-    public String[] getArguments() {
+    public Map<String, Object> getArguments() {
         return arguments;
     }
 
@@ -34,5 +34,9 @@ public class WrappedCommand {
             msg = msg.replaceAll(s, s2);
         });
         sender.sendMessage(msg);
+    }
+
+    public <T> T getArgAsReq(String arg, Class<T> type) {
+        return type.cast(arguments.get(arg));
     }
 }
