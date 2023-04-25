@@ -66,12 +66,24 @@ public class CommandRegister {
         String[] argumentsToFill = args.clone();
         List<CommandArgument> requiredArguments = new ArrayList<>(cmd.getArgumentMap().values());
         Map<String, Object> arguments = new HashMap<>();
+        Map<String, CCommand> subCommands = cmd.getSubCommands();
 
         if (args.length == 0 && requiredArguments.size() == 0) {
             cmd.getExecute().accept(new WrappedCommand(sender, new HashMap<>()));
             return;
         }
 
+        // Check for subcommands
+        for (String subCmd : subCommands.keySet()) {
+            if (argumentsToFill.length >= 1) {
+                if(argumentsToFill[0].equalsIgnoreCase(subCmd)) {
+                    executeCommand(sender, cutArray(argumentsToFill, 1), subCommands.get(subCmd));
+                    return;
+                }
+            }
+        }
+
+        // Check for any arguments
         if (argumentsToFill.length != requiredArguments.size()) {
             // TODO: Send incorrect usage
             sender.sendMessage("Wrong amount of arguments");
