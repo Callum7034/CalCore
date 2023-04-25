@@ -18,6 +18,7 @@ public class CCommand {
     private Command bukkitCommand;
     private Map<String, CCommand> subCommands = new HashMap<>();
     private Map<String, CommandArgument> argumentMap = new LinkedHashMap<>();
+    private boolean isSecret = false;
 
     public CCommand() {
     }
@@ -62,6 +63,11 @@ public class CCommand {
         return this;
     }
 
+    public CCommand setSecret(boolean secret) {
+        this.isSecret = secret;
+        return this;
+    }
+
     public String getCmd() {
         return cmd;
     }
@@ -100,5 +106,9 @@ public class CCommand {
 
     public Map<String, CommandArgument> getArgumentMap() {
         return argumentMap;
+    }
+
+    public boolean isSecret() {
+        return isSecret;
     }
 }

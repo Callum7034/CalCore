@@ -11,10 +11,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class CommandRegister {
 
-    private Map<String, CCommand> registeredCommands = new ConcurrentHashMap<>();
+    private Map<String, CCommand> registeredCommands;
     private JavaPlugin plugin;
     private CommandMap commandMap;
 
@@ -47,6 +48,18 @@ public class CommandRegister {
                     t.printStackTrace();
                 }
                 return false;
+            }
+            @Override
+            public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+                List<String> completion = new ArrayList<>();
+
+                if (cmd.getSubCommands().isEmpty()) return completion;
+
+                if (args.length == 1) {
+                    completion.addAll(getSubCommandsFor(cmd, sender));
+                }
+
+                return completion;
             }
         };
 
@@ -112,5 +125,14 @@ public class CommandRegister {
             return new String[0];
         else
             return Arrays.copyOfRange(array, amount, array.length);
+    }
+
+    private Collection<String> getSubCommandsFor(CCommand command, CommandSender sender) {
+        return command.getSubCommands().values()
+                .stream()
+                .filter(subCommand -> !subCommand.isSecret())
+                .filter(subCommand -> subCommand.getPermission() == null || sender.hasPermission(subCommand.getPermission()))
+                .map(CCommand::getCmd)
+                .collect(Collectors.toList());
     }
 }
