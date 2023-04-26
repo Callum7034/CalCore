@@ -20,6 +20,7 @@ public class CCommand {
     private Map<String, CommandArgument> argumentMap = new LinkedHashMap<>();
     private boolean isSecret = false;
     private String correctUsage = "";
+    private boolean requirePlayer = false;
 
     public CCommand() {
     }
@@ -74,6 +75,11 @@ public class CCommand {
         return this;
     }
 
+    public CCommand setRequirePlayer(boolean requirePlayer) {
+        this.requirePlayer = requirePlayer;
+        return this;
+    }
+
     public String getCmd() {
         return cmd;
     }
@@ -120,5 +126,9 @@ public class CCommand {
 
     public String getCorrectUsage() {
         return correctUsage;
+    }
+
+    public boolean isRequirePlayer() {
+        return requirePlayer;
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -59,6 +60,9 @@ public class CommandRegister {
                 if (args.length == 1) {
                     completion.addAll(getSubCommandsFor(cmd, sender));
                 }
+                if (args.length == 2) {
+                    completion.addAll(getSubCommandsFor(cmd.getSubCommands().get(args[0]), sender));
+                }
 
                 return completion;
             }
@@ -71,10 +75,17 @@ public class CommandRegister {
     }
 
     private void executeCommand(CommandSender sender, String[] args, CCommand cmd) {
+        // Checks to see if the sender must be a player
+        if (cmd.isRequirePlayer()) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(Colour.c(language.playerOnly));
+                return;
+            }
+        }
         String[] argumentsToFill = args.clone();
         List<CommandArgument> requiredArguments = new ArrayList<>(cmd.getArgumentMap().values());
         int optionalArguments = (int) requiredArguments.stream()
-                .filter(commandArgument -> commandArgument.isOptional())
+                .filter(CommandArgument::isOptional)
                 .collect(Collectors.toList())
                 .size();
         Map<String, Object> arguments = new HashMap<>();
