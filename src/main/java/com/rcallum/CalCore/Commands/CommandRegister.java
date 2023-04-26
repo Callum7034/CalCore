@@ -154,4 +154,8 @@ public class CommandRegister {
                 .map(CCommand::getCmd)
                 .collect(Collectors.toList());
     }
+
+    public CommandDefaultMessages getLanguage() {
+        return language;
+    }
 }
