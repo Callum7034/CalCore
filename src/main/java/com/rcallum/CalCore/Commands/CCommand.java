@@ -19,6 +19,7 @@ public class CCommand {
     private Map<String, CCommand> subCommands = new HashMap<>();
     private Map<String, CommandArgument> argumentMap = new LinkedHashMap<>();
     private boolean isSecret = false;
+    private String correctUsage = "";
 
     public CCommand() {
     }
@@ -68,6 +69,11 @@ public class CCommand {
         return this;
     }
 
+    public CCommand setCorrectUsage(String string) {
+        this.correctUsage = string;
+        return this;
+    }
+
     public String getCmd() {
         return cmd;
     }
@@ -110,5 +116,9 @@ public class CCommand {
 
     public boolean isSecret() {
         return isSecret;
+    }
+
+    public String getCorrectUsage() {
+        return correctUsage;
     }
 }

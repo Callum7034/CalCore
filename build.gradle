@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
-    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.41.2.1'
+    compileOnly group: 'org.xerial', name: 'sqlite-jdbc', version: '3.41.2.1'
     implementation "com.mrivanplays:annotationconfig-yaml:3.0.2-SNAPSHOT"
 }
 
@@ -60,3 +60,10 @@ shadowJar {
         attributes 'Main-Class': 'com.rcallum.CalCore.CalCore'
     }
 }
+//shadowJar {
+//    archiveBaseName = 'CalCore'
+//    archiveVersion =  '0.1.0-utils'
+//    manifest {
+//        attributes 'Main-Class': 'com.rcallum.CalCore.CalCore'
+//    }
+//}

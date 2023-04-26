@@ -1,6 +1,7 @@
 package com.rcallum.CalCore.Commands;
 
 import com.rcallum.CalCore.Commands.Arguments.CommandArgument;
+import com.rcallum.CalCore.Utils.Colour;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -10,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class CommandRegister {
@@ -18,11 +18,12 @@ public class CommandRegister {
     private Map<String, CCommand> registeredCommands;
     private JavaPlugin plugin;
     private CommandMap commandMap;
+    private CommandDefaultMessages language;
 
     public CommandRegister(JavaPlugin pl) {
         registeredCommands = new HashMap<>();
         plugin = pl;
-
+        language = new CommandDefaultMessages();
         try {
 
             Field cMap = SimplePluginManager.class.getDeclaredField("commandMap");
@@ -70,14 +71,12 @@ public class CommandRegister {
     }
 
     private void executeCommand(CommandSender sender, String[] args, CCommand cmd) {
-        if (!sender.hasPermission(cmd.getPermission())) {
-            // TODO: Send no permission
-            sender.sendMessage("No permission");
-            return;
-        }
-
         String[] argumentsToFill = args.clone();
         List<CommandArgument> requiredArguments = new ArrayList<>(cmd.getArgumentMap().values());
+        int optionalArguments = (int) requiredArguments.stream()
+                .filter(commandArgument -> commandArgument.isOptional())
+                .collect(Collectors.toList())
+                .size();
         Map<String, Object> arguments = new HashMap<>();
         Map<String, CCommand> subCommands = cmd.getSubCommands();
 
@@ -85,6 +84,7 @@ public class CommandRegister {
             cmd.getExecute().accept(new WrappedCommand(sender, new HashMap<>()));
             return;
         }
+
 
         // Check for subcommands
         for (String subCmd : subCommands.keySet()) {
@@ -96,18 +96,30 @@ public class CommandRegister {
             }
         }
 
+        // Check to see if the sender has the correct permission to run this command
+        if (!sender.hasPermission(cmd.getPermission())) {
+            sender.sendMessage(Colour.c(language.noPermission));
+            return;
+        }
+
         // Check for any arguments
-        if (argumentsToFill.length != requiredArguments.size()) {
-            // TODO: Send incorrect usage
-            sender.sendMessage("Wrong amount of arguments");
+        if (argumentsToFill.length < (requiredArguments.size() - optionalArguments)) {
+            sender.sendMessage(Colour.c(language.incorrectArgumentAmount));
+            sender.sendMessage(Colour.c(language.getCorrectUsage(cmd)));
             return;
         }
 
         for (CommandArgument arg : requiredArguments) {
+            if (argumentsToFill.length == 0) {
+                if (arg.isOptional()) {
+                    continue;
+                }
+            }
+
             Object argObject = arg.getMapper().parse(argumentsToFill[0]);
             if (argObject == null) {
-                // TODO: Send mapping failed (incorrect usage)
-                sender.sendMessage("The arguments you supplied were incorrect");
+                sender.sendMessage(Colour.c(language.incorrectArgumentProvided));
+                sender.sendMessage(Colour.c(language.getCorrectUsage(cmd)));
                 return;
             }
             arguments.put(arg.getIdentity(), argObject);
@@ -115,7 +127,14 @@ public class CommandRegister {
         }
 
         // Argument requirements met!
-        cmd.getExecute().accept(new WrappedCommand(sender, arguments));
+        // Check if command has executable code
+        if (cmd.getExecute() != null) {
+            cmd.getExecute().accept(new WrappedCommand(sender, arguments));
+        } else {
+            sender.sendMessage(Colour.c(language.getCorrectUsage(cmd)));
+            return;
+        }
+
 
 
 
