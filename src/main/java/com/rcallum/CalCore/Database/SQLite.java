@@ -58,7 +58,7 @@ public class SQLite extends Database{
             s.executeUpdate(customCreateString);
             s.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("[CalCore] Created Database table: " + tableName + " Successfully");
         }
         initialize(tableName);
     }
