@@ -22,4 +22,14 @@ public class NMSItems {
     public static ItemStack addLong(ItemStack item, String key, long value) {
         return NBTEditor.set(item, value, key);
     }
+
+    public static String getNBTTagsAsJSON(ItemStack item) {
+        String outJson = NBTEditor.getNBTCompound(item).toJson();
+        try {
+            outJson = outJson.split("tag:")[1];
+            return outJson.substring(0, outJson.length() - 1);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
