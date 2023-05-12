@@ -23,7 +23,7 @@ public abstract class Database {
 
         } catch (SQLException ex) {
             // Unable to retreive connection
-            ex.printStackTrace();
+            System.out.println("Database error: Unable to retrieve connection");
         }
     }
 
@@ -179,7 +179,7 @@ public abstract class Database {
     public HashMap<String, Object> queryRow(String tableName, String rowID, String row) {
         String statement = "SELECT * "
                 + "FROM " + tableName +
-                " WHERE " + rowID + " = " + row;
+                " WHERE " + rowID + " = '" + row + "'";
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -217,11 +217,9 @@ public abstract class Database {
      * Close the current connection of the statement to the database.
      * <p>
      *
-     * @param The
-     *            statement previously used.
+     * @param ps The statement previously used.
      *
-     * @param The
-     *            result set that was returned from the statement.
+     * @param rs The result set that was returned from the statement.
      *
      */
     public void close(PreparedStatement ps, ResultSet rs) {

@@ -18,7 +18,6 @@ public class SQLite extends Database{
         dbname = databaseName;
         customCreateString = createStatement;
         dataFolder = folder;
-        System.out.println(folder);
     }
 
     public Connection getSQLConnection() {
@@ -58,7 +57,7 @@ public class SQLite extends Database{
             s.executeUpdate(customCreateString);
             s.close();
         } catch (SQLException e) {
-            System.out.println("[CalCore] Created Database table: " + tableName + " Successfully");
+//            System.out.println("[CalCore] Created Database table: " + tableName + " Successfully");
         }
         initialize(tableName);
     }
