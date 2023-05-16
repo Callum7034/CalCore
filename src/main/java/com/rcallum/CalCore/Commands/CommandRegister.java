@@ -55,15 +55,10 @@ public class CommandRegister {
             public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
                 List<String> completion = new ArrayList<>();
 
-                if (cmd.getSubCommands().isEmpty()) return completion;
-
-                if (args.length == 1) {
-                    completion.addAll(getSubCommandsFor(cmd, sender));
+                if (cmd.getSubCommands().isEmpty() && cmd.getArguments().isEmpty()) {
+                    return completion;
                 }
-                if (args.length == 2) {
-                    completion.addAll(getSubCommandsFor(cmd.getSubCommands().get(args[0]), sender));
-                }
-
+                completion = handleTabCompletion(cmd, args, sender);
                 return completion;
             }
         };
@@ -74,6 +69,27 @@ public class CommandRegister {
 
     }
 
+    private List<String> handleTabCompletion(CCommand command, String[] args, CommandSender sender) {
+        List<String> completion = new ArrayList<>();
+        if (args.length >= 1) {
+            CCommand subCommand = command.getSubCommands().get(args[0]);
+            if (subCommand != null) {
+                completion.addAll(handleTabCompletion(subCommand, cutArray(args, 1), sender));
+                return completion;
+            }
+        }
+        if (!command.getSubCommands().isEmpty()) {
+            completion.addAll(getSubCommandsFor(command, sender));
+        }
+        // Finished the sub command section. Below will run if there were no subcommands
+        if (completion.isEmpty()) {
+            List<CommandArgument> requiredArgs = command.getArguments();
+            if (args.length > requiredArgs.size() || args.length == 0) return completion;
+            completion.addAll(requiredArgs.get(args.length - 1).getArgForTab());
+        }
+        return completion;
+    }
+
     private void executeCommand(CommandSender sender, String[] args, CCommand cmd) {
         // Checks to see if the sender must be a player
         if (cmd.isRequirePlayer()) {
@@ -82,8 +98,8 @@ public class CommandRegister {
                 return;
             }
         }
-        String[] argumentsToFill = args.clone();
-        List<CommandArgument> requiredArguments = new ArrayList<>(cmd.getArgumentMap().values());
+        String[] argumentsToEmpty = args.clone();
+        List<CommandArgument> requiredArguments = cmd.getArguments();
         int optionalArguments = (int) requiredArguments.stream()
                 .filter(CommandArgument::isOptional)
                 .collect(Collectors.toList())
@@ -99,9 +115,9 @@ public class CommandRegister {
 
         // Check for subcommands
         for (String subCmd : subCommands.keySet()) {
-            if (argumentsToFill.length >= 1) {
-                if(argumentsToFill[0].equalsIgnoreCase(subCmd)) {
-                    executeCommand(sender, cutArray(argumentsToFill, 1), subCommands.get(subCmd));
+            if (argumentsToEmpty.length >= 1) {
+                if(argumentsToEmpty[0].equalsIgnoreCase(subCmd)) {
+                    executeCommand(sender, cutArray(argumentsToEmpty, 1), subCommands.get(subCmd));
                     return;
                 }
             }
@@ -114,27 +130,27 @@ public class CommandRegister {
         }
 
         // Check for any arguments
-        if (argumentsToFill.length < (requiredArguments.size() - optionalArguments)) {
+        if (argumentsToEmpty.length < (requiredArguments.size() - optionalArguments)) {
             sender.sendMessage(Colour.c(language.incorrectArgumentAmount));
             sender.sendMessage(Colour.c(language.getCorrectUsage(cmd)));
             return;
         }
 
         for (CommandArgument arg : requiredArguments) {
-            if (argumentsToFill.length == 0) {
+            if (argumentsToEmpty.length == 0) {
                 if (arg.isOptional()) {
                     continue;
                 }
             }
 
-            Object argObject = arg.getMapper().parse(argumentsToFill[0]);
+            Object argObject = arg.getMapper().parse(argumentsToEmpty[0]);
             if (argObject == null) {
                 sender.sendMessage(Colour.c(language.incorrectArgumentProvided));
                 sender.sendMessage(Colour.c(language.getCorrectUsage(cmd)));
                 return;
             }
             arguments.put(arg.getIdentity(), argObject);
-            argumentsToFill = cutArray(argumentsToFill, 1);
+            argumentsToEmpty = cutArray(argumentsToEmpty, 1);
         }
 
         // Argument requirements met!

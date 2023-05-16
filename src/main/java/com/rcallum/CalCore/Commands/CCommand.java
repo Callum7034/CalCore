@@ -17,7 +17,7 @@ public class CCommand {
     private String useMessage = "none";
     private Command bukkitCommand;
     private Map<String, CCommand> subCommands = new HashMap<>();
-    private Map<String, CommandArgument> argumentMap = new LinkedHashMap<>();
+    private ArrayList<CommandArgument> arguments = new ArrayList<>();
     private boolean isSecret = false;
     private String correctUsage = "";
     private boolean requirePlayer = false;
@@ -61,7 +61,7 @@ public class CCommand {
     }
 
     public CCommand addArgument(CommandArgument argument) {
-        argumentMap.put(argument.getIdentity(), argument);
+        arguments.add(argument);
         return this;
     }
 
@@ -116,8 +116,8 @@ public class CCommand {
         return subCommands;
     }
 
-    public Map<String, CommandArgument> getArgumentMap() {
-        return argumentMap;
+    public ArrayList<CommandArgument> getArguments() {
+        return arguments;
     }
 
     public boolean isSecret() {
@@ -131,4 +131,5 @@ public class CCommand {
     public boolean isRequirePlayer() {
         return requirePlayer;
     }
+
 }
