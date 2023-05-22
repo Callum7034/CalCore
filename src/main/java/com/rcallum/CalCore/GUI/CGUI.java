@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 
 public class CGUI implements InventoryHolder {
 
@@ -31,7 +32,7 @@ public class CGUI implements InventoryHolder {
     }
 
     public void setItem(int slot, ItemStack item) {
-        CButton button = new CButton(item);
+        CButton button = new CButton(item, UUID.randomUUID().toString());
         addButton(slot, button);
     }
 

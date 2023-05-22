@@ -1,6 +1,7 @@
 package com.rcallum.CalCore.GUI;
 
 import com.rcallum.CalCore.Utils.Colour;
+import com.rcallum.CalCore.nms.NMSItems;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -12,15 +13,20 @@ public class CButton {
     private CButtonListener listener = null;
     private ItemStack item;
     private boolean canInteract = false;
+    private String identifier;
 
-    public CButton(ItemStack item) {
+    public CButton(ItemStack item, String identifier) {
         this.item = item;
         listener = null;
+        this.identifier = identifier;
+        this.item = NMSItems.addString(item, "id", identifier);
     }
 
-    public CButton(Material material) {
+    public CButton(Material material, String identifier) {
         this.item = new ItemStack(material);
         listener = null;
+        this.identifier = identifier;
+        this.item = NMSItems.addString(item, "id", identifier);
     }
 
     public CButton setName(String name) {
@@ -63,6 +69,7 @@ public class CButton {
     public CButton addLore(String loreLine) {
         ItemMeta im = getItemMeta();
         List<String> lore = im.getLore();
+        if (lore == null) lore = new ArrayList<>();
         lore.add(Colour.c(loreLine));
         im.setLore(lore);
         setItemMeta(im);
@@ -98,5 +105,10 @@ public class CButton {
 
     public boolean hasListener() {
         return (listener != null);
+    }
+
+    @Override
+    public String toString() {
+        return getItemMeta().getDisplayName();
     }
 }
