@@ -17,7 +17,6 @@ public class ArgInt extends CommandArgument<Integer> {
             }
         });
         setTabCompletion(input -> {
-            System.out.println("returning description dickhead");
             return Arrays.asList(getDescription());
         });
     }

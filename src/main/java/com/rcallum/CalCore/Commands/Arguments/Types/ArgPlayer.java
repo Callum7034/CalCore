@@ -17,9 +17,7 @@ public class ArgPlayer extends CommandArgument<Player> {
                 return null;
             }
         });
-        setTabCompletion(input -> {
-            return Bukkit.getServer().getOnlinePlayers().stream().map(player ->
-                    player.getName()).collect(Collectors.toList());
-        });
+        setTabCompletion(input -> Bukkit.getServer().getOnlinePlayers().stream().map(player ->
+                player.getName()).collect(Collectors.toList()));
     }
 }
