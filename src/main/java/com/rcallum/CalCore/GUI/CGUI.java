@@ -39,7 +39,7 @@ public class CGUI implements InventoryHolder {
     public void setFillerItem(Material material) {
         ItemStack fillerItemStack = new ItemStack(material);
         ItemMeta im = fillerItemStack.getItemMeta();
-        im.setDisplayName("");
+        im.setDisplayName(" ");
         fillerItemStack.setItemMeta(im);
         fillerItem = fillerItemStack;
     }
