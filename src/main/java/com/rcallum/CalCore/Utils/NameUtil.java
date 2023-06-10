@@ -16,4 +16,9 @@ public class NameUtil {
         return WordUtils.capitalizeFully(name);
     }
 
+    public static String getName(String name) {
+        name = name.replaceAll("_", " ");
+        return WordUtils.capitalizeFully(name);
+    }
+
 }
