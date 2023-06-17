@@ -3,6 +3,7 @@ package com.rcallum.CalCore.GUI;
 import com.rcallum.CalCore.Utils.Colour;
 import com.rcallum.CalCore.nms.NMSItems;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -72,6 +73,13 @@ public class CButton {
         if (lore == null) lore = new ArrayList<>();
         lore.add(Colour.c(loreLine));
         im.setLore(lore);
+        setItemMeta(im);
+        return this;
+    }
+
+    public CButton addItemFlag(ItemFlag flag) {
+        ItemMeta im = getItemMeta();
+        im.addItemFlags(flag);
         setItemMeta(im);
         return this;
     }
